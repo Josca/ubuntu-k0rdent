@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# add this line using "crontab -e":
+# */5 * * * * /home/ubuntu/scripts/try_update_passwd.sh
+
 log() {
     echo "$@"
     logger -t try_update_passwd "$@"
