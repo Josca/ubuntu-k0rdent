@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -euo pipefail
 # export EC2IP=108.130.16.138
 # ./scripts/sync.sh -vurn
 
