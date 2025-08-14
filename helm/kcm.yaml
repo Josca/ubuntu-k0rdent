@@ -1,4 +1,7 @@
 k0rdent-ui:
+  enabled: true
   auth:
     basic:
-      password: pass
+      enabled: true
+      username: admin
+      password: admin
