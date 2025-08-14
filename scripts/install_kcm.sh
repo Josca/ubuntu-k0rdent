@@ -9,3 +9,4 @@ helm upgrade --install kcm \
   -f helm/kcm.yaml
 
 kubectl apply -f manifests/ingress-ui.yaml
+kubectl apply -f manifests/k0rdent-catalog.yaml
