@@ -1,0 +1,4 @@
+k0rdent-ui:
+  auth:
+    basic:
+      password: pass
