@@ -1,0 +1,8 @@
+# Change "admin" user password in k0rdent web UI (default password: "admin")
+k0rdent-update-password
+
+# Setup AWS credential for k0rdent
+k0rdent-setup-aws-credential
+
+# Setup Azure credential for k0rdent
+k0rdent-setup-azure-credential
