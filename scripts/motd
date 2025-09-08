@@ -2,7 +2,7 @@
 k0rdent-update-password
 
 # Setup AWS credential for k0rdent
-k0rdent-setup-aws-credential
+k0rdent-setup-aws-credential "k0rdentUser"
 
 # Setup Azure credential for k0rdent
 k0rdent-setup-azure-credential
