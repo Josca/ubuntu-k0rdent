@@ -2,6 +2,10 @@
 k0rdent-update-password
 
 # Setup AWS credential for k0rdent
+export AWS_REGION="..." # Any prefered AWS region to create k0rdent related IAM permissions, e.g. us-west-1
+export AWS_ACCESS_KEY_ID="..."
+export AWS_SECRET_ACCESS_KEY="..."
+export AWS_SESSION_TOKEN="..."
 k0rdent-setup-aws-credential "k0rdentUser"
 
 # Setup Azure credential for k0rdent
