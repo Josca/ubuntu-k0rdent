@@ -9,4 +9,8 @@ export AWS_SESSION_TOKEN="..."
 k0rdent-setup-aws-credential "k0rdentUser"
 
 # Setup Azure credential for k0rdent
+export AZURE_SP_APP_ID="..."
+export AZURE_SP_TENANT_ID="..."
+export AZURE_SUB_ID="..."
+export AZURE_SP_PASSWORD="..."
 k0rdent-setup-azure-credential
