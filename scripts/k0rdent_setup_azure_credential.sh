@@ -1,10 +1,33 @@
 #!/bin/bash
-set -euo pipefail
+set -eo pipefail
 
-AZURE_SP_APP_ID="$(python3 scripts/askpass.py AZURE_SP_APP_ID --len 8)" || exit 1
-AZURE_SP_TENANT_ID="$(python3 scripts/askpass.py AZURE_SP_TENANT_ID --len 8)" || exit 1
-AZURE_SUB_ID="$(python3 scripts/askpass.py AZURE_SUB_ID --len 8)" || exit 1
-AZURE_SP_PASSWORD="$(python3 scripts/askpass.py AZURE_SP_PASSWORD --len 8)" || exit 1
+# Usage:
+# Set Azure credential environment variables before:
+# export AZURE_SP_APP_ID="..."
+# export AZURE_SP_TENANT_ID="..."
+# export AZURE_SUB_ID="..."
+# export AZURE_SP_PASSWORD="..."
+
+status="ok"
+assert_staus_ok() {
+  if [[ $status != "ok" ]]; then
+    exit 1
+  fi
+}
+
+assert_env_var() {
+  local var_name="$1"
+  if [ -z "${!var_name}" ]; then
+    echo "Error: $var_name is unset or empty" >&2
+    status="err"
+  fi
+}
+
+assert_env_var AZURE_SP_APP_ID
+assert_env_var AZURE_SP_TENANT_ID
+assert_env_var AZURE_SUB_ID
+assert_env_var AZURE_SP_PASSWORD
+assert_staus_ok
 
 helm upgrade --install azure-credential oci://ghcr.io/k0rdent/catalog/charts/azure-credential \
     --version 1.0.0 \
