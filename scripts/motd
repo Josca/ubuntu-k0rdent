@@ -14,3 +14,7 @@ export AZURE_SP_TENANT_ID="..."
 export AZURE_SUB_ID="..."
 export AZURE_SP_PASSWORD="..."
 k0rdent-setup-azure-credential
+
+# Setup GCP credential for k0rdent
+export GCP_B64ENCODED_CREDENTIALS="..."
+k0rdent-setup-gcp-credential

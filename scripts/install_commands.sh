@@ -8,4 +8,5 @@ mv k0rdent-aws-setup/scripts/setup-k0rdent-user.py "$(pwd)/scripts/setup-k0rdent
 sudo ln -s "$(pwd)/scripts/k0rdent_update_password.sh" /usr/local/bin/k0rdent-update-password
 sudo ln -s "$(pwd)/k0rdent-aws-setup/setup.sh" /usr/local/bin/k0rdent-setup-aws-credential
 sudo ln -s "$(pwd)/scripts/k0rdent_setup_azure_credential.sh" /usr/local/bin/k0rdent-setup-azure-credential
+sudo ln -s "$(pwd)/scripts/k0rdent_setup_gcp_credential.sh" /usr/local/bin/k0rdent-setup-gcp-credential
 sudo cp "$(pwd)/scripts/motd" /etc/motd
