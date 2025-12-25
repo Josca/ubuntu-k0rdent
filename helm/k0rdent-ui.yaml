@@ -1,0 +1,13 @@
+image:
+  repository: registry.mirantis.com/k0rdent-enterprise/k0rdent-ui
+auth:
+  basic:
+    enabled: true
+    username: admin
+    password: k0rdent
+    secretKeyRef:
+      key: ''
+      name: ''
+    clusterRoleName: kcm-manager-role
+nextAuth:
+  generateSecret: true
