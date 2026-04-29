@@ -32,17 +32,24 @@ source "qemu" "alpine" {
   communicator = "ssh"
   ssh_username = "root"
   ssh_password = "packer"
-  ssh_timeout  = "10m"
+  ssh_timeout  = "20m"
 
-  boot_wait = "30s"
+  http_directory = "http"
+
+  boot_wait = "60s"
   boot_command = [
-    "root<enter><wait>",
-    "ifconfig eth0 up && udhcpc -i eth0<enter><wait5>",
-    "setup-apkrepos -1<enter><wait5>",
-    "echo 'root:packer' | chpasswd<enter><wait>",
-    "echo 'PermitRootLogin yes' >> /etc/ssh/sshd_config<enter>",
-    "mkdir -p /run/openrc && touch /run/openrc/softlevel<enter>",
-    "rc-service sshd start<enter><wait5>",
+    "root<enter><wait10>",
+    "ifconfig eth0 up && udhcpc -i eth0<enter><wait10>",
+    "wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/answers -O /tmp/answers<enter><wait5>",
+    "setup-alpine -f /tmp/answers<enter><wait5>",
+    "packer<enter><wait>",
+    "packer<enter><wait60>",
+    "mount /dev/vda3 /mnt<enter><wait>",
+    "echo 'PermitRootLogin yes' >> /mnt/etc/ssh/sshd_config<enter>",
+    "umount /mnt<enter><wait>",
+    "reboot<enter><wait90>",
+    "root<enter><wait5>",
+    "packer<enter><wait10>",
   ]
 
   shutdown_command = "poweroff"
@@ -55,23 +62,15 @@ source "qemu" "alpine" {
 build {
   sources = ["source.qemu.alpine"]
 
-  # Install to disk so the image is persistent
-  provisioner "shell" {
-    inline = [
-      "export ERASE_DISKS=/dev/vda",
-      "echo -e 'us\nus\nalpine\neth0\ndhcp\ndone\nnone\nno\nvda\nsys\ny' | setup-alpine || true",
-    ]
-  }
-
   # Custom MOTD
   provisioner "file" {
     source      = "files/motd"
-    destination = "/mnt/etc/motd"
+    destination = "/etc/motd"
   }
 
   provisioner "shell" {
     inline = [
-      "cat /mnt/etc/motd",
+      "grep k0rdent /etc/motd",
       "echo 'Build complete'",
     ]
   }
