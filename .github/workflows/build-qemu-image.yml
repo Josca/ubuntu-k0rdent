@@ -1,0 +1,43 @@
+name: Build QEMU Image
+
+on:
+  push:
+    branches: ["*"]
+    paths:
+      - "packer/**"
+      - ".github/workflows/build-qemu-image.yml"
+  pull_request:
+    paths:
+      - "packer/**"
+      - ".github/workflows/build-qemu-image.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install QEMU
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-system-x86 qemu-utils
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+
+      - name: Packer Init
+        working-directory: packer
+        run: packer init alpine-qemu.pkr.hcl
+
+      - name: Packer Build
+        working-directory: packer
+        run: packer build alpine-qemu.pkr.hcl
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: alpine-qemu-image
+          path: packer/output/*.qcow2
+          retention-days: 7
