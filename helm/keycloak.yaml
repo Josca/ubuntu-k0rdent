@@ -1,0 +1,32 @@
+keycloakx:
+  ingress:
+    enabled: true
+    rules:
+      - host: keycloak.um3.172.19.112.42.sslip.io
+        paths:
+          - path: "/"
+            pathType: Prefix
+  command:
+    - "/opt/keycloak/bin/kc.sh"
+    - "start"
+    - "--http-port=8080"
+    - "--hostname-strict=false"
+  extraEnv: |
+    - name: KC_BOOTSTRAP_ADMIN_USERNAME
+      value: admin
+    - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+      value: admin
+    - name: JAVA_OPTS_APPEND
+      value: >-
+        -Djgroups.dns.query=keycloakx-headless
+
+  dbchecker:
+    enabled: true
+
+  database:
+    vendor: postgres
+    hostname: postgresql.postgresql.svc.cluster.local
+    port: 5432
+    username: user
+    password: passwd
+    database: pgdb
