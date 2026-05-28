@@ -1,0 +1,54 @@
+keycloakx:
+  ingress:
+    enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
+    rules:
+      - host: keycloak.um3.172.19.112.42.sslip.io
+        paths:
+          - path: "/"
+            pathType: Prefix
+  command:
+    - "/opt/keycloak/bin/kc.sh"
+    - "start"
+    - "--http-port=8080"
+    - "--hostname-strict=false"
+    - "--proxy-headers=xforwarded"
+    - "--import-realm"
+
+    # - "--hostname=keycloak.um3.172.19.112.42.sslip.io"
+  extraEnv: |
+    - name: KC_BOOTSTRAP_ADMIN_USERNAME
+      value: admin
+    - name: KC_BOOTSTRAP_ADMIN_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: keycloak-auth
+          key: keycloakAdminUserPassword
+    - name: JAVA_OPTS_APPEND
+      value: >-
+        -Djgroups.dns.query=keycloakx-headless
+
+  dbchecker:
+    enabled: true
+
+  database:
+    vendor: postgres
+    hostname: keycloak-pg-postgresql.keycloak.svc.cluster.local
+    port: 5432
+    username: keycloak-user
+    # password: ''
+    database: keycloak-db
+    existingSecret: keycloak-auth
+    existingSecretKey: dbPassword
+
+  extraVolumes: |
+    - name: realm-config
+      configMap:
+        name: keycloak-realm
+
+  extraVolumeMounts: |
+    - name: realm-config
+      mountPath: /opt/keycloak/data/import
+      readOnly: true

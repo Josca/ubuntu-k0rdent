@@ -1,0 +1,29 @@
+kube-prometheus-stack:
+  prometheus:
+    prometheusSpec:
+      maximumStartupDurationSeconds: 300
+      retention: 15d
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: 1Gi
+  grafana:
+    persistence:
+      enabled: true
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+    ingress:
+      enabled: true
+      hosts: ['grafana.172.19.112.42.sslip.io']
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+      tls:
+        - secretName: grafana-tls
+          hosts: ['grafana.172.19.112.42.sslip.io']
+  alertmanager:
+    enabled: false # default: true
