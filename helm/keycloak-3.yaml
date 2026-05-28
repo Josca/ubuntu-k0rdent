@@ -15,7 +15,10 @@ keycloakx:
     - name: KC_BOOTSTRAP_ADMIN_USERNAME
       value: admin
     - name: KC_BOOTSTRAP_ADMIN_PASSWORD
-      value: admin
+      valueFrom:
+        secretKeyRef:
+          name: keycloak-db
+          key: keycloakAdminUserPassword
     - name: JAVA_OPTS_APPEND
       value: >-
         -Djgroups.dns.query=keycloakx-headless
@@ -25,8 +28,10 @@ keycloakx:
 
   database:
     vendor: postgres
-    hostname: postgresql.postgresql.svc.cluster.local
+    hostname: keycloak-pg-postgresql.keycloak.svc.cluster.local
     port: 5432
-    username: user
-    password: passwd
-    database: pgdb
+    username: keycloak-user
+    # password: ''
+    database: keycloak-db
+    existingSecret: keycloak-db
+    existingSecretKey: dbPassword

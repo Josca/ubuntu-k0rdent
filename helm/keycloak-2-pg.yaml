@@ -1,0 +1,17 @@
+postgresql:
+  global:
+    security:
+      allowInsecureImages: true
+  image:
+    repository: bitnamilegacy/postgresql
+  auth:
+    username: keycloak-user
+    database: keycloak-db
+    # postgresPassword: ''
+    # password: ''
+    existingSecret: keycloak-db
+    secretKeys:
+      adminPasswordKey: postgresPassword
+      userPasswordKey: dbPassword
+  readReplicas:
+    replicaCount: 2

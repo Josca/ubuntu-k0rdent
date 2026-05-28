@@ -6,4 +6,4 @@ helm upgrade --install keycloak \
   --version 7.2.0 \
   -n keycloak \
   --create-namespace \
-  -f helm/keycloak.yaml
+  -f helm/keycloak-3.yaml
