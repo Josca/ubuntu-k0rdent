@@ -36,6 +36,21 @@ raw:
                   "temporary": true
                 }
               ]
+            },
+            {
+              "username": "lee",
+              "enabled": true,
+              "email": "lxie@example.com",
+              "firstName": "Lee",
+              "lastName": "Xie",
+              "emailVerified": true,
+              "credentials": [
+                {
+                  "type": "password",
+                  "value": "CHANGE_ME",
+                  "temporary": true
+                }
+              ]
             }
           ],
           "clients": [
@@ -48,6 +63,21 @@ raw:
               ],
               "protocol": "openid-connect",
               "secret": "grafana-secret"
+            },
+            {
+              "clientId": "jupyterhub",
+              "enabled": true,
+              "protocol": "openid-connect",
+              "publicClient": false,
+              "secret": "jupyterhub-secret",
+              "redirectUris": [
+                "https://jupyterhub.um3.172.19.112.42.sslip.io/hub/oauth_callback"
+              ],
+              "webOrigins": [
+                "https://jupyterhub.um3.172.19.112.42.sslip.io"
+              ],
+              "standardFlowEnabled": true,
+              "directAccessGrantsEnabled": false
             }
           ]
         }

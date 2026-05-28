@@ -1,0 +1,45 @@
+  jupyterhub:
+    ingress:
+      enabled: true
+      hosts: ['jupyterhub.um3.172.19.112.42.sslip.io']
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.tls: "true"
+
+    hub:
+      config:
+        JupyterHub:
+          admin_access: true
+          authenticator_class: generic-oauth
+
+        GenericOAuthenticator:
+          client_id: jupyterhub
+          client_secret: jupyterhub-secret
+          token_endpoint_auth_method: client_secret_post
+          validate_server_cert: false # when running without valid https cert
+          oauth_callback_url: https://jupyterhub.um3.172.19.112.42.sslip.io/hub/oauth_callback
+
+          authorize_url: https://keycloak.um3.172.19.112.42.sslip.io/auth/realms/homelab/protocol/openid-connect/auth
+          # token_url: http://keycloak-keycloakx-http.keycloak.svc.cluster.local/auth/realms/homelab/protocol/openid-connect/token
+          # userdata_url: http://keycloak-keycloakx-http.keycloak.svc.cluster.local/auth/realms/homelab/protocol/openid-connect/userinfo
+          token_url: https://keycloak.um3.172.19.112.42.sslip.io/auth/realms/homelab/protocol/openid-connect/token
+          userdata_url: https://keycloak.um3.172.19.112.42.sslip.io/auth/realms/homelab/protocol/openid-connect/userinfo
+          logout_redirect_url: https://keycloak.um3.172.19.112.42.sslip.io/auth/realms/homelab/protocol/openid-connect/logout
+          
+          scope:
+            - openid
+            - profile
+            - email
+
+          username_claim: preferred_username
+          userdata_method: GET
+
+          allowed_users:
+            - josef
+            - lee
+          admin_users:
+            - josef
+
+      extraEnv:
+        OAUTH2_AUTHORIZE_URL: https://keycloak.um3.172.19.112.42.sslip.io/realms/homelab/protocol/openid-connect/auth
+        OAUTH2_TOKEN_URL: https://keycloak.um3.172.19.112.42.sslip.io/realms/homelab/protocol/openid-connect/token

@@ -1,6 +1,9 @@
 keycloakx:
   ingress:
     enabled: true
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: "true"
     rules:
       - host: keycloak.um3.172.19.112.42.sslip.io
         paths:
@@ -14,6 +17,7 @@ keycloakx:
     - "--proxy-headers=xforwarded"
     - "--import-realm"
 
+    # - "--hostname=keycloak.um3.172.19.112.42.sslip.io"
   extraEnv: |
     - name: KC_BOOTSTRAP_ADMIN_USERNAME
       value: admin
