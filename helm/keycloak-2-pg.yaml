@@ -9,7 +9,7 @@ postgresql:
     database: keycloak-db
     # postgresPassword: ''
     # password: ''
-    existingSecret: keycloak-db
+    existingSecret: keycloak-auth
     secretKeys:
       adminPasswordKey: postgresPassword
       userPasswordKey: dbPassword

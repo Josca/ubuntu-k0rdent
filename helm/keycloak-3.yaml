@@ -11,13 +11,16 @@ keycloakx:
     - "start"
     - "--http-port=8080"
     - "--hostname-strict=false"
+    - "--proxy-headers=xforwarded"
+    - "--import-realm"
+
   extraEnv: |
     - name: KC_BOOTSTRAP_ADMIN_USERNAME
       value: admin
     - name: KC_BOOTSTRAP_ADMIN_PASSWORD
       valueFrom:
         secretKeyRef:
-          name: keycloak-db
+          name: keycloak-auth
           key: keycloakAdminUserPassword
     - name: JAVA_OPTS_APPEND
       value: >-
@@ -33,5 +36,15 @@ keycloakx:
     username: keycloak-user
     # password: ''
     database: keycloak-db
-    existingSecret: keycloak-db
+    existingSecret: keycloak-auth
     existingSecretKey: dbPassword
+
+  extraVolumes: |
+    - name: realm-config
+      configMap:
+        name: keycloak-realm
+
+  extraVolumeMounts: |
+    - name: realm-config
+      mountPath: /opt/keycloak/data/import
+      readOnly: true
